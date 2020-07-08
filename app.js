@@ -45,9 +45,7 @@ app.get('/apps', (req, res) => {
   res.json(results);
 });
 
-app.listen(8000, () => {
-  console.log('Server started on PORT 8000');
-});
+module.exports = { app, compareValues };
 
 // sort	'rating' or 'app'	sort the list by either rating or app, any other value results in an error, if no value provided do not perform a sort.
 
