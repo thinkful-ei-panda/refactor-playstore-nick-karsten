@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-
 const app = express();
+const apps = require('./playstore-data.js');
 
 app.use(morgan('common'));
 
@@ -17,8 +17,6 @@ function compareValues(key, order = 'asc') {
   };
 }
 
-const apps = require('./playstore-data.js');
-
 app.get('/apps', (req, res) => {
   const { sort = '' } = req.query;
   const { genre = '' } = req.query;
@@ -26,12 +24,15 @@ app.get('/apps', (req, res) => {
   let results = apps;
   const genres = ['Action', 'Puzzle', 'Strategy', 'Casual', 'Arcade', 'Card'];
 
-  if (genre && !genres.includes(genre.toLowerCase())) {
-    return res.status(400).send('Please select from available genres');
-  } else {
-    results = results.filter((results) => {
-      return results.Genres.toLowerCase().includes(genre.toLowerCase());
+  //   if (genre && !genres.includes(genre.toLowerCase())) {
+  //     return res.status(400).send('Please select from available genres');
+  //   }
+  if (genre) {
+    results = results.filter((app) => {
+      return app.Genres.toLowerCase() === genre.toLowerCase();
     });
+  } else {
+    results;
   }
 
   if (sort === 'rating') {
