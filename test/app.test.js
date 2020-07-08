@@ -20,3 +20,17 @@ describe('Sort', () => {
     expect(array.sort(app.compareValues('App'))).to.eql(ordered);
   });
 });
+
+describe('GET /apps endpoint', () => {
+  it('should return an array of objects', () => {
+    return supertest(app.app)
+      .get('/apps')
+      .query({ sort: 'App', genres: 'Action' })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((res) => {
+        expect(res.body).to.be.an('array');
+        expect(Object.keys(res.body)).to.have.lengthOf.at.least(1);
+      });
+  });
+});
